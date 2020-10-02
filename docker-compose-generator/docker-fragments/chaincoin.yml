@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  chaincoind:
+    restart: unless-stopped
+    container_name: btcpayserver_chaincoind
+    image: pewilliams71/docker-chaincoin:0.18.1
+    environment:
+      BITCOIN_NETWORK: ${NBITCOIN_NETWORK:-regtest}
+      BITCOIN_EXTRA_ARGS: |
+        rpcuser=rpcuser
+        rpcpassword=rpcpassword
+        rpcbind=0.0.0.0:43782
+        port=39388
+        server=1
+    expose:
+      - "43782"
+      - "39388"
+    volumes:
+      - "chaincoin_datadir:/data"
+  nbxplorer:
+      environment:
+        NBXPLORER_CHAINS: "chc"
+        NBXPLORER_CHCRPCURL: http://chaincoind:43782/
+        NBXPLORER_CHCNODEENDPOINT: chaincoind:39388
+        NBXPLORER_CHCRPCUSER: rpcuser
+        NBXPLORER_CHCRPCPASSWORD: rpcpassword
+      volumes:
+        - "chaincoin_datadir:/root/.chaincoincore"
+      links:
+        - chaincoind
+  btcpayserver:
+      environment:
+        BTCPAY_CHCEXPLORERURL: http://nbxplorer:32838/
+        BTCPAY_CHAINS: "chc"
+volumes:
+  chaincoin_datadir:

@@ -89,5 +89,12 @@
     "CLightningFragment": null,
     "LNDFragment": null,
     "EclairFragment": null
+  },
+  {
+    "Crypto": "chc",
+    "CryptoFragment": "chaincoin",
+    "CLightningFragment": null,
+    "LNDFragment": null,
+    "EclairFragment": null
   }
 ]
